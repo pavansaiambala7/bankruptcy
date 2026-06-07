@@ -19,4 +19,20 @@ from tensorflow.keras.callbacks import EarlyStopping
 warnings.filterwarnings("ignore")
 os.makedirs("models", exist_ok=True)
 
-# TODO: implement pipeline
+# =============================================================
+# STEP 1 – Parse the ARFF file (no scipy needed)
+# =============================================================
+def load_arff(path):
+    # Read @attribute lines to get column names
+    attr_names = []
+    with open(path, "r") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("%"):
+                continue
+            if line.lower().startswith("@attribute"):
+                attr_names.append(line.split()[1])
+            elif line.lower().startswith("@data"):
+                break
+    print(f"Attributes: {attr_names[:5]} ...")
+    # TODO: load data section
