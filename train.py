@@ -23,16 +23,21 @@ os.makedirs("models", exist_ok=True)
 # STEP 1 – Parse the ARFF file (no scipy needed)
 # =============================================================
 def load_arff(path):
-    # Read @attribute lines to get column names
-    attr_names = []
+    attr_names, data_lines, in_data = [], [], False
     with open(path, "r") as f:
         for line in f:
             line = line.strip()
             if not line or line.startswith("%"):
                 continue
-            if line.lower().startswith("@attribute"):
+            low = line.lower()
+            if low.startswith("@attribute"):
                 attr_names.append(line.split()[1])
-            elif line.lower().startswith("@data"):
-                break
-    print(f"Attributes: {attr_names[:5]} ...")
-    # TODO: load data section
+            elif low.startswith("@data"):
+                in_data = True
+            elif in_data:
+                data_lines.append(line)
+    df = pd.read_csv(StringIO("\n".join(data_lines)),
+                     header=None, names=attr_names, na_values="?")
+    # class column arrives as b'0' or b'1' – extract the digit
+    df["class"] = df["class"].astype(str).str.extract(r"(\d+)")[0].astype(int)
+    return df
