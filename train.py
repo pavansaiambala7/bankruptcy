@@ -41,3 +41,7 @@ def load_arff(path):
     # class column arrives as b'0' or b'1' – extract the digit
     df["class"] = df["class"].astype(str).str.extract(r"(\d+)")[0].astype(int)
     return df
+
+df = load_arff("data/3year.arff")
+print(f"[1] Loaded {df.shape[0]} rows, {df.shape[1]} columns")
+print(f"    Bankruptcy rate: {df['class'].mean()*100:.1f}%")
