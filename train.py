@@ -45,3 +45,14 @@ def load_arff(path):
 df = load_arff("data/3year.arff")
 print(f"[1] Loaded {df.shape[0]} rows, {df.shape[1]} columns")
 print(f"    Bankruptcy rate: {df['class'].mean()*100:.1f}%")
+
+# =============================================================
+# STEP 2 – Data cleaning
+# =============================================================
+# Replace inf with NaN (division-by-zero in financial ratios)
+df.replace([np.inf, -np.inf], np.nan, inplace=True)
+
+FEATURE_COLS = [c for c in df.columns if c != "class"]
+X_raw = df[FEATURE_COLS].values
+y     = df["class"].values
+print(f"[2a] Inf replaced, features: {len(FEATURE_COLS)}")
