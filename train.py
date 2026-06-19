@@ -56,3 +56,8 @@ FEATURE_COLS = [c for c in df.columns if c != "class"]
 X_raw = df[FEATURE_COLS].values
 y     = df["class"].values
 print(f"[2a] Inf replaced, features: {len(FEATURE_COLS)}")
+
+# Fill NaN with the column median (robust against outliers)
+imputer = SimpleImputer(strategy="median")
+X_imp   = imputer.fit_transform(X_raw)
+print(f"[2] NaN after imputation: {np.isnan(X_imp).sum()}")
