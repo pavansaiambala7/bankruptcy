@@ -30,3 +30,6 @@ pip install -r requirements.txt
 python train.py
 python app.py
 ```
+
+## Why Median Imputation?
+Median is robust against extreme financial-ratio outliers.
