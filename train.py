@@ -61,3 +61,12 @@ print(f"[2a] Inf replaced, features: {len(FEATURE_COLS)}")
 imputer = SimpleImputer(strategy="median")
 X_imp   = imputer.fit_transform(X_raw)
 print(f"[2] NaN after imputation: {np.isnan(X_imp).sum()}")
+
+# =============================================================
+# STEP 3 – Feature engineering
+# =============================================================
+# 3-a: Clip to 1st-99th percentile so one bad row can't dominate
+p1  = np.percentile(X_imp, 1,  axis=0)
+p99 = np.percentile(X_imp, 99, axis=0)
+X_clipped = np.clip(X_imp, p1, p99)
+print("[3a] Outliers clipped")
