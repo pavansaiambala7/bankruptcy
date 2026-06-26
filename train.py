@@ -70,3 +70,7 @@ p1  = np.percentile(X_imp, 1,  axis=0)
 p99 = np.percentile(X_imp, 99, axis=0)
 X_clipped = np.clip(X_imp, p1, p99)
 print("[3a] Outliers clipped")
+
+# 3-b: Net-profit margin proxy = Attr2 / (Attr1 + eps)
+margin_proxy = (X_clipped[:, 1] / (X_clipped[:, 0] + 1e-9)).reshape(-1, 1)
+print("[3b] margin_proxy added")
