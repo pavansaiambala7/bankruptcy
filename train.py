@@ -74,3 +74,9 @@ print("[3a] Outliers clipped")
 # 3-b: Net-profit margin proxy = Attr2 / (Attr1 + eps)
 margin_proxy = (X_clipped[:, 1] / (X_clipped[:, 0] + 1e-9)).reshape(-1, 1)
 print("[3b] margin_proxy added")
+
+# 3-c: Leverage ratio = Attr4 / (Attr5 + eps) – high value → risk
+leverage = (X_clipped[:, 3] / (X_clipped[:, 4] + 1e-9)).reshape(-1, 1)
+X_eng = np.hstack([X_clipped, margin_proxy, leverage])
+FINAL_FEATURE_NAMES = FEATURE_COLS + ["margin_proxy", "leverage_ratio"]
+print(f"[3] Total features: {X_eng.shape[1]}")
