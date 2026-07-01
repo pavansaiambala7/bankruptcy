@@ -80,3 +80,10 @@ leverage = (X_clipped[:, 3] / (X_clipped[:, 4] + 1e-9)).reshape(-1, 1)
 X_eng = np.hstack([X_clipped, margin_proxy, leverage])
 FINAL_FEATURE_NAMES = FEATURE_COLS + ["margin_proxy", "leverage_ratio"]
 print(f"[3] Total features: {X_eng.shape[1]}")
+
+# =============================================================
+# STEP 4 – Stratified train/test split (80/20)
+# =============================================================
+X_train, X_test, y_train, y_test = train_test_split(
+    X_eng, y, test_size=0.2, stratify=y, random_state=42)
+print(f"[4] Train={X_train.shape[0]}  Test={X_test.shape[0]}")
