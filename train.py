@@ -87,3 +87,11 @@ print(f"[3] Total features: {X_eng.shape[1]}")
 X_train, X_test, y_train, y_test = train_test_split(
     X_eng, y, test_size=0.2, stratify=y, random_state=42)
 print(f"[4] Train={X_train.shape[0]}  Test={X_test.shape[0]}")
+
+# =============================================================
+# STEP 5 – Scale features (fit on train ONLY – no data leakage)
+# =============================================================
+scaler  = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test  = scaler.transform(X_test)
+print("[5] StandardScaler applied")
