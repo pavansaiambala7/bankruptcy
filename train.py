@@ -95,3 +95,16 @@ scaler  = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test  = scaler.transform(X_test)
 print("[5] StandardScaler applied")
+
+# =============================================================
+# STEP 6 – Model A: XGBoost
+# =============================================================
+neg, pos = (y_train == 0).sum(), (y_train == 1).sum()
+spw = neg / pos  # upweight bankrupt class
+print(f"[6] scale_pos_weight = {spw:.1f}")
+
+xgb_model = XGBClassifier(
+    scale_pos_weight=spw, max_depth=5, learning_rate=0.1,
+    n_estimators=200, eval_metric="logloss", random_state=42, n_jobs=-1)
+xgb_model.fit(X_train, y_train)
+print("[6] XGBoost trained (fixed params)")
