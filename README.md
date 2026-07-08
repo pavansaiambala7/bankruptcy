@@ -31,5 +31,5 @@ python train.py
 python app.py
 ```
 
-## Why Median Imputation?
-Median is robust against extreme financial-ratio outliers.
+## Class Imbalance
+Only ~5% bankrupt. scale_pos_weight = neg/pos (~20) corrects this.
