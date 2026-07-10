@@ -97,14 +97,22 @@ X_test  = scaler.transform(X_test)
 print("[5] StandardScaler applied")
 
 # =============================================================
-# STEP 6 – Model A: XGBoost
+# STEP 6 – Model A: XGBoost with GridSearchCV
 # =============================================================
 neg, pos = (y_train == 0).sum(), (y_train == 1).sum()
-spw = neg / pos  # upweight bankrupt class
+spw = neg / pos
 print(f"[6] scale_pos_weight = {spw:.1f}")
 
-xgb_model = XGBClassifier(
-    scale_pos_weight=spw, max_depth=5, learning_rate=0.1,
-    n_estimators=200, eval_metric="logloss", random_state=42, n_jobs=-1)
-xgb_model.fit(X_train, y_train)
-print("[6] XGBoost trained (fixed params)")
+xgb_base = XGBClassifier(scale_pos_weight=spw, eval_metric="logloss",
+                          random_state=42, n_jobs=-1)
+param_grid = {
+    "max_depth":     [3, 5],
+    "learning_rate": [0.05, 0.1],
+    "n_estimators":  [100, 200],
+}
+# cv=3 and roc_auc scoring suit imbalanced classification
+grid = GridSearchCV(xgb_base, param_grid, cv=3,
+                    scoring="roc_auc", n_jobs=-1, verbose=0)
+grid.fit(X_train, y_train)
+xgb_model = grid.best_estimator_
+print(f"[6] Best XGB params: {grid.best_params_}")
