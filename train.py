@@ -112,7 +112,7 @@ param_grid = {
 }
 # cv=3 and roc_auc scoring suit imbalanced classification
 grid = GridSearchCV(xgb_base, param_grid, cv=3,
-                    scoring="roc_auc", n_jobs=-1, verbose=1)
+                    scoring="roc_auc", n_jobs=-1, verbose=0)
 grid.fit(X_train, y_train)
 xgb_model = grid.best_estimator_
 print(f"[6] Best XGB params: {grid.best_params_}")
