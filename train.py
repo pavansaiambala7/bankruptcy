@@ -116,3 +116,14 @@ grid = GridSearchCV(xgb_base, param_grid, cv=3,
 grid.fit(X_train, y_train)
 xgb_model = grid.best_estimator_
 print(f"[6] Best XGB params: {grid.best_params_}")
+
+# =============================================================
+# STEP 7 – Model B: Keras ANN (skeleton)
+# =============================================================
+ann = Sequential([
+    Dense(64, activation="relu", input_shape=(X_train.shape[1],)),
+    Dense(1,  activation="sigmoid"),
+])
+ann.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
+ann.fit(X_train, y_train, epochs=20, batch_size=256, verbose=0)
+print("[7] ANN skeleton trained")
