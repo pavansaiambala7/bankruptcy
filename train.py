@@ -118,12 +118,14 @@ xgb_model = grid.best_estimator_
 print(f"[6] Best XGB params: {grid.best_params_}")
 
 # =============================================================
-# STEP 7 – Model B: Keras ANN (skeleton)
+# STEP 7 – Model B: Keras ANN with Dropout
 # =============================================================
 ann = Sequential([
     Dense(64, activation="relu", input_shape=(X_train.shape[1],)),
+    Dropout(0.3),   # zero 30% of neurons per step → prevents overfitting
+    Dense(32, activation="relu"),
     Dense(1,  activation="sigmoid"),
 ])
 ann.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-ann.fit(X_train, y_train, epochs=20, batch_size=256, verbose=0)
-print("[7] ANN skeleton trained")
+ann.fit(X_train, y_train, epochs=30, batch_size=256, verbose=0)
+print("[7] ANN with Dropout trained")
