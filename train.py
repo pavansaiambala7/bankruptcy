@@ -118,14 +118,21 @@ xgb_model = grid.best_estimator_
 print(f"[6] Best XGB params: {grid.best_params_}")
 
 # =============================================================
-# STEP 7 – Model B: Keras ANN with Dropout
+# STEP 7 – Model B: Keras ANN (complete)
 # =============================================================
+class_weight = {0: 1.0, 1: spw}   # penalise bankrupt misses more
+
 ann = Sequential([
     Dense(64, activation="relu", input_shape=(X_train.shape[1],)),
-    Dropout(0.3),   # zero 30% of neurons per step → prevents overfitting
+    Dropout(0.3),
     Dense(32, activation="relu"),
     Dense(1,  activation="sigmoid"),
 ])
 ann.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])
-ann.fit(X_train, y_train, epochs=30, batch_size=256, verbose=0)
-print("[7] ANN with Dropout trained")
+
+early_stop = EarlyStopping(monitor="val_loss", patience=5,
+                           restore_best_weights=True)
+ann.fit(X_train, y_train,
+        validation_split=0.1, epochs=50, batch_size=256,
+        class_weight=class_weight, callbacks=[early_stop], verbose=0)
+print("[7] ANN training complete")
