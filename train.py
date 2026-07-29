@@ -112,7 +112,7 @@ param_grid = {
 }
 # cv=3 and roc_auc scoring suit imbalanced classification
 grid = GridSearchCV(xgb_base, param_grid, cv=3,
-                    scoring="roc_auc", n_jobs=-1, verbose=1)
+                    scoring="roc_auc", n_jobs=-1, verbose=0)
 grid.fit(X_train, y_train)
 xgb_model = grid.best_estimator_
 print(f"[6] Best XGB params: {grid.best_params_}")
@@ -134,5 +134,5 @@ early_stop = EarlyStopping(monitor="val_loss", patience=5,
                            restore_best_weights=True)
 ann.fit(X_train, y_train,
         validation_split=0.1, epochs=50, batch_size=256,
-        class_weight=class_weight, callbacks=[early_stop], verbose=1)
+        class_weight=class_weight, callbacks=[early_stop], verbose=0)
 print("[7] ANN training complete")
