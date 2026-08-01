@@ -136,3 +136,14 @@ ann.fit(X_train, y_train,
         validation_split=0.1, epochs=50, batch_size=256,
         class_weight=class_weight, callbacks=[early_stop], verbose=0)
 print("[7] ANN training complete")
+
+# =============================================================
+# STEP 8 – Hybrid: soft voting (average probabilities)
+# =============================================================
+xgb_prob    = xgb_model.predict_proba(X_test)[:, 1]
+ann_prob    = ann.predict(X_test, verbose=0).flatten()
+hybrid_prob = (xgb_prob + ann_prob) / 2.0   # errors partially cancel
+
+xgb_pred    = (xgb_prob    >= 0.5).astype(int)
+ann_pred    = (ann_prob    >= 0.5).astype(int)
+hybrid_pred = (hybrid_prob >= 0.5).astype(int)
