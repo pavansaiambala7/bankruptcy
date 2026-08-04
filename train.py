@@ -147,3 +147,10 @@ hybrid_prob = (xgb_prob + ann_prob) / 2.0   # errors partially cancel
 xgb_pred    = (xgb_prob    >= 0.5).astype(int)
 ann_pred    = (ann_prob    >= 0.5).astype(int)
 hybrid_pred = (hybrid_prob >= 0.5).astype(int)
+
+# =============================================================
+# STEP 9 – Evaluation
+# =============================================================
+print("\n[9] Confusion matrices:")
+for name, pred in [("XGBoost", xgb_pred), ("ANN", ann_pred), ("Hybrid", hybrid_pred)]:
+    print(f"  {name}:\n{confusion_matrix(y_test, pred)}")
