@@ -149,8 +149,25 @@ ann_pred    = (ann_prob    >= 0.5).astype(int)
 hybrid_pred = (hybrid_prob >= 0.5).astype(int)
 
 # =============================================================
-# STEP 9 – Evaluation
+# STEP 9 – Evaluation (all 5 metrics)
 # =============================================================
-print("\n[9] Confusion matrices:")
+def metrics(name, y_true, y_pred, y_prob):
+    return {
+        "Model":     name,
+        "Accuracy":  round(accuracy_score(y_true, y_pred), 4),
+        "Precision": round(precision_score(y_true, y_pred, zero_division=0), 4),
+        "Recall":    round(recall_score(y_true, y_pred, zero_division=0), 4),
+        "F1":        round(f1_score(y_true, y_pred, zero_division=0), 4),
+        "ROC-AUC":   round(roc_auc_score(y_true, y_prob), 4),
+    }
+
+results = [
+    metrics("XGBoost", y_test, xgb_pred, xgb_prob),
+    metrics("ANN",     y_test, ann_pred,  ann_prob),
+    metrics("Hybrid",  y_test, hybrid_pred, hybrid_prob),
+]
+print("\n[9] ── Evaluation Results ──────────────────────────────")
+print(pd.DataFrame(results).to_string(index=False))
+
 for name, pred in [("XGBoost", xgb_pred), ("ANN", ann_pred), ("Hybrid", hybrid_pred)]:
-    print(f"  {name}:\n{confusion_matrix(y_test, pred)}")
+    print(f"\n    {name} confusion matrix:\n{confusion_matrix(y_test, pred)}")
