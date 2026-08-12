@@ -171,3 +171,13 @@ print(pd.DataFrame(results).to_string(index=False))
 
 for name, pred in [("XGBoost", xgb_pred), ("ANN", ann_pred), ("Hybrid", hybrid_pred)]:
     print(f"\n    {name} confusion matrix:\n{confusion_matrix(y_test, pred)}")
+
+# =============================================================
+# STEP 10 – Export: pickle artifacts
+# =============================================================
+with open("models/xgb_model.pkl",  "wb") as f: pickle.dump(xgb_model, f)
+with open("models/imputer.pkl",    "wb") as f: pickle.dump(imputer,   f)
+with open("models/scaler.pkl",     "wb") as f: pickle.dump(scaler,    f)
+with open("models/features.pkl",   "wb") as f: pickle.dump(FEATURE_COLS, f)
+with open("models/clip_bounds.pkl","wb") as f: pickle.dump((p1, p99), f)
+print("[10a] Pickle artifacts saved to models/")
