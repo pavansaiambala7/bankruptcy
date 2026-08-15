@@ -181,3 +181,6 @@ with open("models/scaler.pkl",     "wb") as f: pickle.dump(scaler,    f)
 with open("models/features.pkl",   "wb") as f: pickle.dump(FEATURE_COLS, f)
 with open("models/clip_bounds.pkl","wb") as f: pickle.dump((p1, p99), f)
 print("[10a] Pickle artifacts saved to models/")
+
+ann.save("models/ann_model.keras")
+print("[10b] ANN saved as models/ann_model.keras")
