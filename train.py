@@ -184,3 +184,13 @@ print("[10a] Pickle artifacts saved to models/")
 
 ann.save("models/ann_model.keras")
 print("[10b] ANN saved as models/ann_model.keras")
+
+# Save 5 real test rows for the demo button
+_, X_test_raw, _, y_test_raw = train_test_split(
+    X_eng, y, test_size=0.2, stratify=y, random_state=42)
+samples = [{"features": X_test_raw[i, :len(FEATURE_COLS)].tolist(),
+            "true_label": int(y_test_raw[i])} for i in range(5)]
+with open("models/samples.json", "w") as f:
+    json.dump(samples, f, indent=2)
+print("[10c] samples.json saved")
+print("\nDone! Now run:  python app.py")
