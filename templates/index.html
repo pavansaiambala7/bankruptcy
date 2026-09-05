@@ -3,11 +3,19 @@
 <head><title>Bankruptcy Forecaster</title></head>
 <body>
 <h1>Bankruptcy Forecasting App</h1>
+<p>Enter a company's 64 financial ratios and click Predict.</p>
 <form method="POST" action="/predict">
-  <input type="text" name="Attr1" placeholder="Attr1 value">
-  <input type="text" name="Attr2" placeholder="Attr2 value">
-  <!-- TODO: add all 64 fields -->
-  <button type="submit">Predict</button>
+  {% for feat in features %}
+    <label>{{ feat }}
+      <input type="number" step="any" name="{{ feat }}"
+             value="{{ values[loop.index0] if values else '' }}" placeholder="0">
+    </label>
+  {% endfor %}
+  <br><button type="submit">Predict Bankruptcy</button>
+  <button type="reset">Clear</button>
 </form>
+{% if result %}
+<p><strong>Result: {{ result }}</strong></p>
+{% endif %}
 </body>
 </html>
