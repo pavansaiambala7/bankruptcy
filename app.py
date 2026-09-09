@@ -28,5 +28,20 @@ def preprocess(raw_values):
 def index():
     return render_template("index.html", features=FEATURE_COLS, samples=SAMPLES)
 
+def predict_all(arr):
+    xgb_p    = float(xgb_model.predict_proba(arr)[0, 1])
+    ann_p    = float(ann_model.predict(arr, verbose=0)[0, 0])
+    hybrid_p = (xgb_p + ann_p) / 2.0
+    return {"xgb": round(xgb_p,4), "ann": round(ann_p,4), "hybrid": round(hybrid_p,4)}
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    raw   = [float(request.form.get(f, 0) or 0) for f in FEATURE_COLS]
+    arr   = preprocess(raw)
+    probs = predict_all(arr)
+    label = "BANKRUPT" if probs["hybrid"] >= 0.5 else "NOT Bankrupt"
+    return render_template("index.html", features=FEATURE_COLS, samples=SAMPLES,
+                           result=label, probs=probs, values=raw)
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
