@@ -31,5 +31,14 @@ python train.py
 python app.py
 ```
 
-## Class Imbalance
-Only ~5% bankrupt. scale_pos_weight = neg/pos (~20) corrects this.
+## Pipeline Overview
+1. Load — Parse ARFF file without scipy
+2. Clean — Replace inf, impute NaN with median
+3. Engineer — Clip outliers, add ratio features
+4. Split — 80/20 train/test, stratified
+5. Scale — StandardScaler (fit on train only)
+6. XGBoost — GridSearchCV, scale_pos_weight for imbalance
+7. ANN — Dense(64)→Dropout→Dense(32)→Dense(1), EarlyStopping
+8. Hybrid — Soft voting (average XGB + ANN probabilities)
+9. Evaluate — Accuracy, Precision, Recall, F1, ROC-AUC
+10. Export — .keras for ANN, .pkl for everything else
