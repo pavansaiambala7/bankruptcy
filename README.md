@@ -42,3 +42,7 @@ python app.py
 8. Hybrid — Soft voting (average XGB + ANN probabilities)
 9. Evaluate — Accuracy, Precision, Recall, F1, ROC-AUC
 10. Export — .keras for ANN, .pkl for everything else
+
+## Why Accuracy Is Misleading
+With 95% healthy companies, a dummy classifier scores 95% accuracy catching ZERO bankruptcies.
+Prefer Recall and ROC-AUC for imbalanced datasets.
