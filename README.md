@@ -46,3 +46,10 @@ python app.py
 ## Why Accuracy Is Misleading
 With 95% healthy companies, a dummy classifier scores 95% accuracy catching ZERO bankruptcies.
 Prefer Recall and ROC-AUC for imbalanced datasets.
+
+## Why the Hybrid Helps
+XGBoost and ANN make different types of errors. Averaging their probabilities reduces variance.
+
+## Why .keras vs .pkl
+- .keras: TF-native format, preserves graph + weights + optimizer state
+- .pkl: simpler Python serialisation, works for sklearn/XGBoost objects
